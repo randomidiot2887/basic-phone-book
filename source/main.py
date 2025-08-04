@@ -15,6 +15,17 @@ Here are the features ill plan to add.
 
 These should be added.. per contact.
 It should be able to handle up to 8000 contacts
+
+
+
+First, we get contact info inputted from user
+Then we validate it to make sure the enterd info is valid
+If so, then we store them in an array
+
+We alow users to edit contacts and also update the status of the contacts
+COntacts can also be deleted
+They can also be searched with appropriate search termenology
+and the program can be exit at some point
 """
 
 max_contact_num = 100 # Holds the max number of contacts that can be stored in the program
