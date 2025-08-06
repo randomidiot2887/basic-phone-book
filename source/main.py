@@ -18,8 +18,8 @@ It should be able to handle up to 8000 contacts
 
 
 
-First, we get contact info inputted from user
-Then we validate it to make sure the enterd info is valid
+First, we get contact info inputted from user   DONE
+Then we validate it to make sure the enterd info is valid DONE
 If so, then we store them in an array
 
 We alow users to edit contacts and also update the status of the contacts
