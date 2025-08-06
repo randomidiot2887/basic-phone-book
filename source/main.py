@@ -32,7 +32,7 @@ max_contact_num = 100 # Holds the max number of contacts that can be stored in t
 contact_details = [["" for _ in range(6)] for _ in range(100)] # Array that stores the contact details of stored contacts
                     # For example, for one person, it could be [....['Aik', 'gn.fuvammulah@gmail.com', '+960 4084082', 'Donald Street', 'Gn.AEC', 'Alive']...]
 
-def validate_details(email, phoneno, name):
+def validate_details(email, phoneno):
     valid_Email = [False, False]
     valid_PhoneNo = [False, False, False, True]
     # Validate E-Mail
@@ -49,20 +49,30 @@ def validate_details(email, phoneno, name):
     if len(phoneno) == 12:  # If the length is exactly 12 digits
         valid_PhoneNo[2] = True
     
-    #Check if all the charectors in the phone number can be converted to numbers (except the first one)
+    # Check if all the charectors in the phone number can be converted to numbers (except the first one)
     for num in phoneno:
         if (num != '+') and (num != ' '): # As there should be atleast 1 plus and 1 space in the format
             try:
                 int(num) # Attempts to convert the charector to a integer
             except ValueError: # Wil only occur if the digit is not a number (Not numerical)
                 valid_PhoneNo[3] = False # Sets the flag to false
+    # Return the correct boolean value depending on validity of data enterd
+    if (valid_Email == [True, True]) and (valid_PhoneNo == [True, True, True, True]):
+        return True
+    else:
+        return False
 
 def get_details():
-    print('Input the following details about contact')
-    contact_name = input('Contact Name\n(in format "FirstName, LastName"): - ')
-    contact_email = input('Contact Email: - ')
-    contact_phoneno = input('Contact Phone Number\n(in format "+CountryCode PhoneNumber"): - ')
-    contact_address = input('Address of contact: - ')
-    contact_work = input('Place they work at: - ')
-    contact_status = input('Current status as of creation: - ')
-
+    while True: # Repeats until its broken out of
+        print('Input the following details about contact') # Prompts user to input details
+        contact_name = input('Contact Name\n(in format "FirstName, LastName"): - ') # Get the name of the contact
+        contact_email = input('Contact Email: - ') # Get contacts email
+        contact_phoneno = input('Contact Phone Number\n(in format "+CountryCode PhoneNumber"): - ') # Gets the contacts phone number
+        contact_address = input('Address of contact: - ') # Gets the contacts address
+        contact_work = input('Place they work at: - ') # Gets the name of the workplace they work at
+        contact_status = input('Current status as of creation: - ') # Get the initial status of the contact
+        if validate_details(contact_email, contact_phoneno): # Checks if the email and phone number are in a valid format
+            break # if so, exits the while loop
+        else:
+            print("Invalid data was enterd. Please re-enter") # If not, prompts the user to re-enter
+    return [contact_name, contact_email, contact_phoneno, contact_address, contact_work, contact_status] # Returns the data in the approved format
