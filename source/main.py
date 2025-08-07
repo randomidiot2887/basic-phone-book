@@ -32,7 +32,9 @@ max_contact_num = 100 # Holds the max number of contacts that can be stored in t
 contact_details = [["" for _ in range(6)] for _ in range(100)] # Array that stores the contact details of stored contacts
                     # For example, for one person, it could be [....['Aik', 'gn.fuvammulah@gmail.com', '+960 4084082', 'Donald Street', 'Gn.AEC', 'Alive']...]
 
-def validate_details(email, phoneno):
+# Code for the getting data from user stage
+#--------------------------------------------
+def validate_details(email:str, phoneno:str):
     valid_Email = [False, False]
     valid_PhoneNo = [False, False, False, True]
     # Validate E-Mail
@@ -76,3 +78,37 @@ def get_details():
         else:
             print("Invalid data was enterd. Please re-enter") # If not, prompts the user to re-enter
     return [contact_name, contact_email, contact_phoneno, contact_address, contact_work, contact_status] # Returns the data in the approved format
+
+def store_details(details):                                     # Stores details of new_contact in the array contact_details
+    if len(details) != 6:                                       # makes sure the passed on list details[] is only 6 elements long
+        raise TypeError                                         # if not, raise TypeError (for debugging)
+    for element in range(len(contact_details)):                 # For each element in the range of the total values of contact_details[]
+        if contact_details[element] == ["" for _ in range(6)]:  # if that element of the array is empty                      
+            for data in range(6):                               # If its empty, loop for ever data to be stored
+                contact_details[element][data] = details[data]  # Store them one by one into the array
+            return element                                      # Exits function on succesful entry, returning index of the newly added contact
+
+# print(store_details(get_details())) Code used for testing the first 3 functions, works fine.
+
+def display_contact_details(contact_index:int):                          # Displays details of one contact
+    if (contact_index >= len(contact_details)) or (contact_index < 0):   # if the index value is not withn the length of the array
+        raise IndexError                                                 # Then raise IndexError
+    # Prints all the details of the contact in the terminal and exits
+    print(f"Contact Index: - {contact_index}")
+    print(f"Contact Name: - {contact_details[contact_index][0]}")
+    print(f"Contact E-Mail: - {contact_details[contact_index][1]}")
+    print(f"Contact Phone-No: - {contact_details[contact_index][2]}")
+    print(f"Contact Address: - {contact_details[contact_index][3]}")
+    print(f"Contact Work: - {contact_details[contact_index][4]}")
+    print(f"Contact Status: - {contact_details[contact_index][5]}")
+    # End of procedure
+
+def replace_details(details:list, contact_index:int):               # Replaces details of existing_contact in the array contact_details
+    if len(details) != 6:                                           # makes sure the passed on list details[] is only 6 elements long
+        raise TypeError                                             # if not, raise TypeError (for debugging)
+    if contact_details[contact_index] != ["" for _ in range(6)]:    # if that element of the array is not empty                      
+        for data in range(6):                                       # If its not empty, loop for every data to be stored
+            contact_details[contact_index][data] = details[data]    # Store them one by one into the array
+        return contact_index                                        # Exits function on succesful entry returning element of existing edited contact
+    else:                                                           # if the index is of an empty position (invalid)
+        raise IndexError                                            # Raises IndexError
