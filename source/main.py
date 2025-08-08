@@ -127,6 +127,22 @@ def change_status(contact_index:int):
     new_status = input(f"Input the new status for contact no {contact_index}\n: - ")    # Gets the new status from user input
     contact_details[contact_index][5] = new_status                  # Stores the new status in the array
 
-def search_contacts(promt:str, no_results:int):
+def search_contacts(prompt:str, no_results:int):
     # i hate myself, I hate myself, I Hate Myself, I HATE MYSELF'
-    
+    results = []
+    for char_prompt in prompt:                                 # Compares every single charector in prompt
+        for row in range(max_contact_num):                     # Iterates thru every row in the array
+            for column in range(6):                            # iterates theu every column in array
+                for char_list in contact_details[row][column]: # Comares every single charector in the element in list
+                    if char_list == char_prompt:               # if the charector matches
+                        found = False                          # initialises found as False
+                        if len(results) != 0:                  # If results is not empty
+                            for element in range(len(results)):# Iterates thru results
+                                if results[element][0] == row: # if the results contains the row already
+                                    results[element][1] += 1   # Add 1 to its credibility score
+                                    found = True               # sets found to true
+                                    break                      # breaks out of the linier search
+                            if not found:                      # if not found
+                                results.append([row, 1])       # Appends a new entry to results
+                        else:                                  # if results is empty
+                            results.append([row, 1])           # Appends a new entery to results
