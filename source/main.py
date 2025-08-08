@@ -32,8 +32,7 @@ max_contact_num = 100 # Holds the max number of contacts that can be stored in t
 contact_details = [["" for _ in range(6)] for _ in range(100)] # Array that stores the contact details of stored contacts
                     # For example, for one person, it could be [....['Aik', 'gn.fuvammulah@gmail.com', '+960 4084082', 'Donald Street', 'Gn.AEC', 'Alive']...]
 
-# Code for the getting data from user stage
-#--------------------------------------------
+
 def validate_details(email:str, phoneno:str):
     valid_Email = [False, False]
     valid_PhoneNo = [False, False, False, True]
@@ -112,3 +111,22 @@ def replace_details(details:list, contact_index:int):               # Replaces d
         return contact_index                                        # Exits function on succesful entry returning element of existing edited contact
     else:                                                           # if the index is of an empty position (invalid)
         raise IndexError                                            # Raises IndexError
+
+def del_contact(contact_index:int):                                 # Deletes the contact and their info in the index provided
+    if (contact_index < 0) and (contact_index >= max_contact_num):  # If the index is out of range
+        raise IndexError                                            # Raises IndexError
+    else:                                                           # If index is in range
+        contact_details[contact_index] = ["" for _ in range(6)]     # Nulls out the info stored at index
+
+def change_status(contact_index:int):
+    if (contact_index < 0) and (contact_index >= max_contact_num):  # If the index is out of range
+        raise IndexError                                            # Raises IndexError
+    
+    print(f"Contact Name is '{contact_details[contact_index][0]}'") # Prints the name of the contact
+    print(f"Contacts former status is '{contact_details[contact_index][5]}'")           # Prints the former status of the contact
+    new_status = input(f"Input the new status for contact no {contact_index}\n: - ")    # Gets the new status from user input
+    contact_details[contact_index][5] = new_status                  # Stores the new status in the array
+
+def search_contacts(promt:str, no_results:int):
+    # i hate myself, I hate myself, I Hate Myself, I HATE MYSELF'
+    
