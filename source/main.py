@@ -20,17 +20,49 @@ It should be able to handle up to 8000 contacts
 
 First, we get contact info inputted from user   DONE
 Then we validate it to make sure the enterd info is valid DONE
-If so, then we store them in an array
+If so, then we store them in an array DONE
 
-We alow users to edit contacts and also update the status of the contacts
-COntacts can also be deleted
-They can also be searched with appropriate search termenology
+We alow users to edit contacts and also update the status of the contacts DONE
+COntacts can also be deleted DONE
+They can also be searched with appropriate search termenology DONE
+We also have a book like scrolling system for the contacts TODO
 and the program can be exit at some point
 """
+
+"""
+Libraries imported
+------------------
+1: - os
+    handles commands related to the OS.
+    os.system() is used alot in this code, thus this is neccecery for execution
+2: - platform
+    platform.system() is used to determine what OS the script is running on
+    This is needed as some console commands are used for stuff like...
+    ... clearing the screen
+"""
+import os
+import platform
+
+
 
 max_contact_num = 100 # Holds the max number of contacts that can be stored in the program
 contact_details = [["" for _ in range(6)] for _ in range(100)] # Array that stores the contact details of stored contacts
                     # For example, for one person, it could be [....['Aik', 'gn.fuvammulah@gmail.com', '+960 4084082', 'Donald Street', 'Gn.AEC', 'Alive']...]
+
+# Stuff needed to make this program, OS Independent
+# -------------------------------------------------
+os_name = platform.system()     # gets the name of the OS using platform.system()
+
+# Cleares the screen
+def cls():                          # A procedure that handles clearing the screen while being platform independent
+    if os_name == 'Windows':        # if the OS is Windows
+        os.system('cls')            # Use the command 'cls'
+    elif os_name == "Linux":        # if the os is Linux
+        os.system('clear')          # use the command 'clear'
+    elif os_name == 'Darwin':       # if the OS is Darwin (macOS)
+        os.system('clear')          # use the command 'clear'
+    else:                           # If the OS is unditermined...
+        raise OSError               # Raise the error OSError (This hasnt been made for your OS)
 
 
 def validate_details(email:str, phoneno:str):
