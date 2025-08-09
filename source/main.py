@@ -127,9 +127,35 @@ def change_status(contact_index:int):
     new_status = input(f"Input the new status for contact no {contact_index}\n: - ")    # Gets the new status from user input
     contact_details[contact_index][5] = new_status                  # Stores the new status in the array
 
-def search_contacts(prompt:str, no_results:int):
+def search_contacts(prompt:str, no_results:int):               # Function to search thru contacts array for key words and return a certain amount of results
     # i hate myself, I hate myself, I Hate Myself, I HATE MYSELF'
-    results = []
+    """
+    DEV EXPLANATION
+    -----------------
+    This algorithm will first select the first letter of the promt enterd by the user
+    Then it iterates thru every single element in contact_details[]... 
+    ...and compares every single letter of every field to the first letter of prompt
+    if the letters match, the contacts index (row) is appended to results[] with a score, of 1
+    then it iterates theu the rest of the array letter by letter
+    if a element of a contact has more matching letters to the prompt, itll get a higher score...
+    ... by searching thru the results to see if they already exist
+    if they do, their score is incremented by 1 for every letter matched
+    once results[] has been found...
+    a bubble sort is performed to arrange contact IDs in decending order of their scores
+    Then, itll get the results and try to identify the results with the highest scores and appends the ids...
+    ... of the highest scoring contacts to final_results[].
+    Itll ONLY find the highest scoring contacts and will try to return only the number of results requested.
+    If the resquested number of results is not found, it sets max_results_found to false and returns it along with the requested contacts,
+    If the requested number of results is found, it sets max_results_found to true and returns it along with the required contacts
+    ------------------
+    ISSUES
+    ------
+    This is a very inefficient algorithm. ill have to improve it once i learn more
+    Bubble sort squares time for every contact added. This can add up to alot
+    and the searching method i used is also very rudementry and unnececerily complex
+    To Sum Up: - This can be improved alot.
+    """
+    results = []                                               # declares array results[]
     for char_prompt in prompt:                                 # Compares every single charector in prompt
         for row in range(max_contact_num):                     # Iterates thru every row in the array
             for column in range(6):                            # iterates theu every column in array
@@ -146,3 +172,23 @@ def search_contacts(prompt:str, no_results:int):
                                 results.append([row, 1])       # Appends a new entry to results
                         else:                                  # if results is empty
                             results.append([row, 1])           # Appends a new entery to results
+    if len(results) > 0:
+        while True:                                            # Repeats until loop
+            swap = False                                       # Sets the SWAP flag to false
+            for element in range(len(results) - 1):            # Repeats for every element except the last one
+                if results[element][1] < results[element+1][1]:    # If the former element is smaller then the next element
+                    results[element+1], results[element] = results[element], results[element+1] # Swaps elements values
+                    swap = True                                # Sets swap to True
+            if not swap: break                                 # If no swap has occured, exit the loop, as data has been sorted
+    final_results = []                                         # Declares list final_results
+    max_results_found = True                                   # Sets the flag max_results_found to True
+    counter = 0                                                # Initialises counter variable to 0
+    for result in results[0]:                                  # Iterates thru every result found from 0
+        counter += 1                                           # Incrememnts the counter by 1
+        final_results.append(result)                           # Appends one result to final_results[]
+        if counter == num_results: break                       # If the number of max results to return has been reached, exit loop
+    if counter != num_results:                                 # If the maximum amount of results hasnt been found (like, less then max results)
+        max_results_found = False                              # Sets the max_results_found flag to False
+    return [final_results, max_results_found]                  # Returns data in format [{Results found in a list, like 0, 1, 2, 3}, {the boolean value in max_results_found}]
+
+

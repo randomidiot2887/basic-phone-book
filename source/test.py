@@ -1,31 +1,49 @@
-def validate_details(email, phoneno):
-    valid_Email = [False, False]
-    valid_PhoneNo = [False, False, False, True]
-    # Validate E-Mail
-    for char in email:
-        if char == '@':
-            valid_Email[0] = True
-        if (char == '.') and (valid_Email[0] == True): # If there is a fullstop after @ has been detected (like, in .com)
-            valid_Email[1] = True
-    # Validate PhoneNumber
-    if phoneno[0] == '+': # Checks for + at posotion 0
-        valid_PhoneNo[0] = True
-    if phoneno[4] == ' ': # Checks for a ' ' at position 4
-        valid_PhoneNo[1] = True
-    if len(phoneno) == 12:  # If the length is exactly 12 digits
-        valid_PhoneNo[2] = True
-    
-    # Check if all the charectors in the phone number can be converted to numbers (except the first one)
-    for num in phoneno:
-        if (num != '+') and (num != ' '): # As there should be atleast 1 plus and 1 space in the format
-            try:
-                int(num) # Attempts to convert the charector to a integer
-            except ValueError: # Wil only occur if the digit is not a number (Not numerical)
-                valid_PhoneNo[3] = False # Sets the flag to false
-    # Return the correct boolean value depending on validity of data enterd
-    if (valid_Email == [True, True]) and (valid_PhoneNo == [True, True, True, True]):
-        return True
-    else:
-        return False
+import random
+import time
+import multiprocessing
 
-print(validate_details("gn.fuvammulah@gmail.com", "+960 9584082"))
+def is_sorted_desc(arr):
+    return all(arr[i] >= arr[i+1] for i in range(len(arr)-1))
+
+def bogosort_worker(arr, stop_flag, return_dict, proc_id):
+    attempts = 0
+    local_arr = arr[:]
+    while not is_sorted_desc(local_arr):
+        if stop_flag.value:
+            return_dict[proc_id] = attempts
+            return
+        random.shuffle(local_arr)
+        attempts += 1
+    print(f"Process {proc_id} sorted after {attempts} attempts")
+    return_dict[proc_id] = attempts
+    stop_flag.value = True
+
+def run_multiprocessing_bogosort(arr, proc_count=4, timeout=5):
+    manager = multiprocessing.Manager()
+    stop_flag = manager.Value('b', False)
+    return_dict = manager.dict()
+    processes = []
+
+    for i in range(proc_count):
+        p = multiprocessing.Process(target=bogosort_worker, args=(arr, stop_flag, return_dict, i))
+        processes.append(p)
+        p.start()
+
+    start = time.time()
+    while time.time() - start < timeout:
+        if stop_flag.value:
+            break
+        time.sleep(0.1)
+
+    stop_flag.value = True
+    for p in processes:
+        p.join()
+
+    total_attempts = sum(return_dict.values()) if return_dict else 0
+    elapsed = time.time() - start
+    print(f"Total attempts across processes: {total_attempts}")
+    print(f"Elapsed time: {elapsed:.2f} seconds")
+
+if __name__ == "__main__":
+    arr = [random.randint(1, 1000) for _ in range(10)]
+    run_multiprocessing_bogosort(arr, proc_count=12, timeout=5000)
