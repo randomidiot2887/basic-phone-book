@@ -1,5 +1,5 @@
 """
-This is gonna be a basic python based phonebook program.
+This is gonna be a basic python based phonebook program
 All data will be stored in primary memory with none stored in secondry memory
 Its supposed to be basic, its goal is to improve my skills
 
