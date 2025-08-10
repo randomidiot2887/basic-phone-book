@@ -46,7 +46,7 @@ import platform
 
 
 max_contact_num = 100 # Holds the max number of contacts that can be stored in the program
-contact_details = [["" for _ in range(6)] for _ in range(100)] # Array that stores the contact details of stored contacts
+contact_details = [["" for _ in range(6)] for _ in range(max_contact_num)] # Array that stores the contact details of stored contacts
                     # For example, for one person, it could be [....['Aik', 'gn.fuvammulah@gmail.com', '+960 4084082', 'Donald Street', 'Gn.AEC', 'Alive']...]
 
 # Stuff needed to make this program, OS Independent
@@ -215,11 +215,11 @@ def search_contacts(prompt:str, no_results:int):               # Function to sea
     final_results = []                                         # Declares list final_results
     max_results_found = True                                   # Sets the flag max_results_found to True
     counter = 0                                                # Initialises counter variable to 0
-    for result in results[0]:                                  # Iterates thru every result found from 0
+    for result in results:                                  # Iterates thru every result found from 0
         counter += 1                                           # Incrememnts the counter by 1
-        final_results.append(result)                           # Appends one result to final_results[]
-        if counter == num_results: break                       # If the number of max results to return has been reached, exit loop
-    if counter != num_results:                                 # If the maximum amount of results hasnt been found (like, less then max results)
+        final_results.append(result[0])                           # Appends one result to final_results[]
+        if counter == no_results: break                       # If the number of max results to return has been reached, exit loop
+    if counter != no-results:                                 # If the maximum amount of results hasnt been found (like, less then max results)
         max_results_found = False                              # Sets the max_results_found flag to False
     return [final_results, max_results_found]                  # Returns data in format [{Results found in a list, like 0, 1, 2, 3}, {the boolean value in max_results_found}]
 
