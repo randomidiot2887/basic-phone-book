@@ -1,21 +1,12 @@
-from tkinter import *
-from tkinter import ttk
+import sys, tty, termios
 
-def test():
-    ttk.Label(frm, text="NOU                     !").grid(column=0, row=0)
-    
+print("Press a key:")
+fd = sys.stdin.fileno()
+old_settings = termios.tcgetattr(fd)
+try:
+    tty.setraw(fd)
+    ch = sys.stdin.read(1)
+finally:
+    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
-
-
-
-
-
-
-
-root = Tk()
-frm = ttk.Frame(root, padding=10)
-frm.grid()
-ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
-ttk.Button(frm, text="quit", command=root.destroy).grid(column=1, row=0)
-ttk.Button(frm, text="change, message", command=test).grid(column=1, row=1)
-root.mainloop()
+print(f"You pressed: {ch}")
